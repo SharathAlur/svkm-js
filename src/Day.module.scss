@@ -1,23 +1,26 @@
 :local {
     .day {
-        width: 13.95%;
+        width: 13.6%;
         height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        padding: 1px;
     }
     .isAvailable {
-        border: 1px solid green;
+        border: 1px solid gray;
     }
     .isSelected {
+        border: 1px solid red;
         background-color: #eee;
+        text-decoration: underline;
     }
     .isToday {
-        border: 1px solid yellow;
+        font-weight: bold;
     }
     .isBooked {
-        border: 1px solid red;
+        background-color: rgb(125, 219, 231);
     }
     .isWeekString {
         background-color: royalblue;

@@ -1,5 +1,5 @@
 export default {
-    "2020-6-11": {
+    "20200611": {
         id: '1111',
         bookingDate: '2020-5-11',
         name: 'Harish M P',
@@ -19,7 +19,7 @@ export default {
             receiver: 'Anand',
         }]
     },
-    "2020-12-06" : {
+    "20200612" : {
         id: '1112',
         bookingDate: '2020-12-6',
         name: 'Harish M P',

@@ -8,9 +8,9 @@ export default function Day(props) {
         'day',
         { isAvailable: props.isAvailable },
         { isSelected: props.isSelected },
+        { isBooked: props.isBooked},
         { isToday: props.isToday },
         { isWeekString: props.isWeekString },
-        {isBooked: props.isBooked}
     ]);
     return (
         <div className={dayClassNames} onClick={props.onClick} >

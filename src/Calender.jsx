@@ -51,24 +51,19 @@ const Body = styled.div`
 //     `}
 // `;
 
-export function Calendar() {
-  const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+export function Calendar(props) {
   const DAYS_OF_THE_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
   const today = moment();
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(props.date);
   const [day, setDay] = useState(date.date());
   const [month, setMonth] = useState(date.month());
-  const [year, setYear] = useState(date.year());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     setDay(date.date());
     setMonth(date.month());
-    setYear(date.year());
     setStartDay(getStartDayOfMonth(date));
   }, [date, getStartDayOfMonth]);
 
@@ -77,23 +72,17 @@ export function Calendar() {
   }, [month])
 
   function getStartDayOfMonth(date) {
-    return moment(date).add(1 - date.date(), 'day').day();
+    return moment(`${date.format('YYYYMM')}01`).day();
   }
-
-  function isLeapYear(year) {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  }
-
-  const days = isLeapYear ? DAYS_LEAP : DAYS;
 
   return (
     <Frame>
       <Header>
-        <Button onClick={() => setDate(date.add(-1, 'month'))}>Prev</Button>
+        <Button onClick={() => setDate(moment(date.format('YYYYMMDD')).add(-1, 'month'))}>Prev</Button>
         <div>
-          {MONTHS[month]} {year}
+          {date.format('MMM')} {date.year()}
         </div>
-        <Button onClick={() => setDate(date.add(1, 'month'))}>Next</Button>
+        <Button onClick={() => setDate(moment(date.format('YYYYMMDD')).add(1, 'month'))}>Next</Button>
       </Header>
       <Body>
         {DAYS_OF_THE_WEEK.map(d => (
@@ -101,19 +90,20 @@ export function Calendar() {
             <strong>{d}</strong>
           </Day>
         ))}
-        {Array(days[month] + (startDay - 1))
+        {Array(date.daysInMonth() + (startDay - 1))
           .fill(null)
           .map((_, index) => {
             const d = index - (startDay - 2);
-            const currentDate = `${year}-${month + 1}-${d}`;
+            const currentDate = moment(`${date.format('YYYYMM')}${d}`);
+            const dateString = currentDate.format('YYYYMMDD');
             return (
               <Day
-                key={currentDate}
-                isToday={d === today.date()}
+                key={dateString}
+                isToday={today.isSame(currentDate, 'day')}
                 isSelected={d === day}
                 isAvailable
-                onClick={() => setDate(moment(currentDate))}
-                isBooked={!!bookings[currentDate]}
+                onClick={() => setDate(currentDate)}
+                isBooked={!!bookings[dateString]}
               >
                 {d > 0 ? d : ''}
               </Day>
